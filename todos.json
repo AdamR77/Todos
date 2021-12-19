@@ -1,0 +1,15 @@
+
+todos = [
+    {
+      'id': 1,
+    'title': 'spłata kursu',
+    'description': 'spłata: pozostałe 10 rat po 430pln',
+    'done': False
+    },
+    {
+      'id':2,
+      'title': 'zakup samochodu używanego',
+     'description': 'rozpatrzenie ofert, negocjacje, zakup'},
+     'done': False
+    }
+]
