@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template, abort
 from flask import make_response, redirect, url_for
 from flask_wtf import FlaskForm
 from forms import LoginForm
-from models import Todos
+from models import todos
 from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
@@ -34,7 +34,7 @@ def login():
 @app.route("/api/todos/", methods=["GET"])
 @csrf.exempt
 def todos_api():
-    return jsonify(Todos.all())
+    return jsonify(todos.all())
 
 @app.route("/api/todos/", methods=["POST"])
 @csrf.exempt
@@ -72,7 +72,7 @@ def get_todo(todo_id):
         if form.validate_on_submit():
             todos.update(todo_id - 1, form.data)
         return redirect(url_for("todos_list"))
-    return render_template("todo.html", form=form, todo_id=todo_id)
+    return render_template("todos.html", form=form, todo_id=todo_id)
 
 @app.route("/todos/<int:todo_id>/", methods=["GET" , "POST"])
 @csrf.exempt
