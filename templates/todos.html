@@ -28,6 +28,7 @@
     <h2> Dodaj nowe zadanie: </h2>
     <form method="POST" action="/todos/">
         {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
         <table>
             {% for field in form if field.widget.input_type != 'hidden' %}
                 <tr>

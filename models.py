@@ -14,11 +14,11 @@ class Todos:
     def get(self, id):
         todo = [ todo for todos in self.all if ['id'] == id]
         if todo:
-            return todos[0]:
-        return self todos[id]
+            return todos[0]
+        return self.todos[id]
 
     def create(self, data):
-        data.pop('csrf.token')
+        #data.pop('csrf.token')
         self.todos.append(data)
 
     def save_all(self):
@@ -31,7 +31,7 @@ class Todos:
         self.save_all()
 
 
-    todos = Todos()
+todos = Todos()
 
 
 
