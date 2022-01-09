@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template, abort
 from flask import make_response, redirect, url_for
 from flask_wtf import FlaskForm
 from forms import LoginForm
-from models import Todos
+from models import todos
 from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ username = "adam"
 password = "qwerty123"
 
 def create_app():
-    app = flask(__name__)
+    app = Flask(__name__)
     csrf.init_app(app)
 
 
@@ -34,7 +34,7 @@ def login():
 @app.route("/api/todos/", methods=["GET"])
 @csrf.exempt
 def todos_api():
-    return jsonify(Todos.all())
+    return jsonify(todos.all())
 
 @app.route("/api/todos/", methods=["POST"])
 @csrf.exempt
@@ -44,7 +44,7 @@ def add_todo():
     todo = {
         'id': todos.all()[-1]['id'] + 1,
         'title': request.json.get('title'),
-        'decription': request.json.get('description', ""),
+        'description': request.json.get('description', ""),
     }
     todos.create(todo)
     return jsonify({'todo': todo}), 201
@@ -57,14 +57,15 @@ def get_todo(todo_id):
         abort(404)
     return jsonify({'todo:': todo})
 
-    form = TodoForm()
+    #form = TodoForm() => instancja do nieistniejacej klasy usunięta
     error = ""
-    if request.method == "POST":
+    if request.method == "GET":
         if form.validate_on_submit():
             todos.create(form.data)
             todos.save_all()
-        return redirect(url_for("todos_list"))
 
+    elif request.method == "POST":
+        return redirect(url_for("todos_list"))
 
     return render_template("todos.html", form=form, todos=todos.all(), error=error)
 

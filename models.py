@@ -12,7 +12,7 @@ class Todos:
         return self.todos
 
     def get(self, id):
-        todo = [ todo for todos in self.all if ['id'] == id]
+        todo = [ todo for todo in self.all() if ['id'] == id]
         if todo:
             return todos[0]
         return self.todos[id]
