@@ -73,7 +73,7 @@ def get_todo(todo_id):
         if form.validate_on_submit():
             todos.update(todo_id - 1, form.data)
         return redirect(url_for("todos_list"))
-    return render_template("todo.html", form=form, todo_id=todo_id)
+    return render_template("todos.html", form=form, todo_id=todo_id)
 
 @app.route("/todos/<int:todo_id>/", methods=["GET" , "POST"])
 @csrf.exempt
