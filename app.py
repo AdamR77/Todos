@@ -17,6 +17,7 @@ def create_app():
     csrf.init_app(app)
 
 
+
 @app.route("/login/", methods = ['GET', "POST"])
 @csrf.exempt
 def login():
@@ -31,6 +32,8 @@ def login():
             return "Wrong credentials!!"
     return render_template("login.html", form = form)
 
+
+
 @app.route("/api/todos/", methods=["GET"])
 @csrf.exempt
 def todos_api():
@@ -42,13 +45,70 @@ def add_todo():
     if not request.json:
         abort(400)
     todo = {
-        'id': todos.all()[-1]['id'] + 1,
-        'title': request.json.get('title'),
-        'description': request.json.get('description', ""),
+    'id': todos.all()[-1]['id'] + 1,
+    'title': request.json.get('title'),
+    'description': request.json.get('description', ""),
     }
     todos.create(todo)
     return jsonify({'todo': todo}), 201
 
+
+@app.route("/todos/<int:todos_id>", methods=["GET"])
+def get_todo(todos_id):
+    todo = todos.get(todos_id)
+    if not todo:
+        abort(404)
+    return jsonify({"todo": todo})
+#    return render_template("todos.html", form=form, todos=todos.all(), error=error)
+
+
+@app.route("/todos/<int:todo_id>", methods=['DELETE'])
+def remove_todos(todo_id):
+    result = todos.delete(todo_id)
+    if not result:
+        abort(404)
+    return jsonify({'result': result})
+#    return render_template("todos.html", form=form, todos=todos.all(), error=error)
+
+
+@app.route("/todos/<int:todo_id>", methods=["PUT"])
+def update_todos(todo_id):
+    todo = todos.get(todo_id)
+    if not todo:
+        abort(404)
+    if not request.json:
+        abort(400)
+    data = request.json
+    if any([
+        'title' in data and not isinstance(data.get('title'), str),
+        'description' in data and not isinstance(data.get('description'), str),
+        ]):
+        abort(400)
+        todo = {
+        'title': data.get('title', todo['title']),
+        'description': data.get('description', todo['description']),
+        }
+        todos.update(todo_id, todo)
+        return jsonify({'todo': todo})
+    else:
+        return render_template("todos.html", form=form, todos=todos.all(), error=error)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found', 'status_code': 404}), 404)
+
+
+def bad_request(error):
+    return make_response(jsonify({'error': 'Bad request', 'status_code': 400}), 400)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+'''
 @app.route("/todos/<int:todo_id>/", methods=["GET", "POST"])
 @csrf.exempt
 def get_todo(todo_id):
@@ -60,11 +120,10 @@ def get_todo(todo_id):
     # def todos_details(todo_id):
     #    todo = todos.get(todo - 1)
     #    form = TodoForm(data=todo)
-
-
-
     #form = TodoForm() => instancja do nieistniejacej klasy usunięta
+
     error = ""
+
     if request.method == "GET":
         if form.validate_on_submit():
             todos.create(form.data)
@@ -72,16 +131,15 @@ def get_todo(todo_id):
 
     elif request.method == "POST":
         return redirect(url_for("todos_list"))
-
-    return render_template("todos.html", form=form, todos=todos.all(), error=error)
+        return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
     if request.method == "POST":
         if form.validate_on_submit():
             todos.update(todo_id - 1, form.data)
         return redirect(url_for("todos_list"))
     return render_template("todos.html", form=form, todo_id=todo_id)
+'''
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
