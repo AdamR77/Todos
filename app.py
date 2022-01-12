@@ -57,6 +57,12 @@ def get_todo(todo_id):
         abort(404)
     return jsonify({'todo:': todo})
 
+    # def todos_details(todo_id):
+    #    todo = todos.get(todo - 1)
+    #    form = TodoForm(data=todo)
+
+
+
     #form = TodoForm() => instancja do nieistniejacej klasy usunięta
     error = ""
     if request.method == "GET":
@@ -75,11 +81,7 @@ def get_todo(todo_id):
         return redirect(url_for("todos_list"))
     return render_template("todos.html", form=form, todo_id=todo_id)
 
-@app.route("/todos/<int:todo_id>/", methods=["GET" , "POST"])
-@csrf.exempt
-def todos_details(todo_id):
-    todo = todos.get(todo - 1)
-    form = TodoForm(data=todo)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
