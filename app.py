@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, render_template, abort
 from flask import make_response, redirect, url_for
 from flask_wtf import FlaskForm
-from forms import LoginForm
 from models import todos
 from flask_wtf.csrf import CSRFProtect
 
