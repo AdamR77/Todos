@@ -9,28 +9,10 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "qwerty123"
 csrf = CSRFProtect()
 
-username = "adam"
-password = "qwerty123"
 
-def create_app():
-    app = Flask(__name__)
-    csrf.init_app(app)
-
-
-
-@app.route("/login/", methods = ['GET', "POST"])
-@csrf.exempt
-def login():
-    form = LoginForm()
-    if request.method == "POST":
-        if (
-            form.data.get("username") == username and
-            form.data.get("password") == password
-            ):
-            return "You are logged id"
-        else:
-            return "Wrong credentials!!"
-    return render_template("login.html", form = form)
+#def create_app():
+#    app = Flask(__name__)
+#    csrf.init_app(app)
 
 
 @app.route("/api/todos/", methods=["GET"])
@@ -58,7 +40,6 @@ def get_todo(todos_id):
     if not todo:
         abort(404)
     return jsonify({"todo": todo})
-#return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
 
 @app.route("/todos/<int:todo_id>", methods=['DELETE'])
@@ -67,7 +48,6 @@ def remove_todos(todo_id):
     if not result:
         abort(404)
     return jsonify({'result': result})
-#return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
 
 @app.route("/todos/<int:todo_id>", methods=["PUT"])
@@ -89,8 +69,6 @@ def update_todos(todo_id):
         }
         todos.update(todo_id, todo)
         return jsonify({'todo': todo})
-    else:
-        return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
 
 @app.errorhandler(404)
@@ -105,39 +83,6 @@ def bad_request(error):
 if __name__ == "__main__":
     app.run(debug=True)
 
-
-
-'''
-@app.route("/todos/<int:todo_id>/", methods=["GET", "POST"])
-@csrf.exempt
-def get_todo(todo_id):
-    todo = todos.get(todo_id)
-    if not todo:
-        abort(404)
-    return jsonify({'todo:': todo})
-
-    # def todos_details(todo_id):
-    #    todo = todos.get(todo - 1)
-    #    form = TodoForm(data=todo)
-    #form = TodoForm() => instancja do nieistniejacej klasy usunięta
-
-    error = ""
-
-    if request.method == "GET":
-        if form.validate_on_submit():
-            todos.create(form.data)
-            todos.save_all()
-
-    elif request.method == "POST":
-        return redirect(url_for("todos_list"))
-        return render_template("todos.html", form=form, todos=todos.all(), error=error)
-
-    if request.method == "POST":
-        if form.validate_on_submit():
-            todos.update(todo_id - 1, form.data)
-        return redirect(url_for("todos_list"))
-    return render_template("todos.html", form=form, todo_id=todo_id)
-'''
 
 
 
