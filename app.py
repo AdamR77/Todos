@@ -33,7 +33,6 @@ def login():
     return render_template("login.html", form = form)
 
 
-
 @app.route("/api/todos/", methods=["GET"])
 @csrf.exempt
 def todos_api():
@@ -59,7 +58,7 @@ def get_todo(todos_id):
     if not todo:
         abort(404)
     return jsonify({"todo": todo})
-#    return render_template("todos.html", form=form, todos=todos.all(), error=error)
+#return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
 
 @app.route("/todos/<int:todo_id>", methods=['DELETE'])
@@ -68,7 +67,7 @@ def remove_todos(todo_id):
     if not result:
         abort(404)
     return jsonify({'result': result})
-#    return render_template("todos.html", form=form, todos=todos.all(), error=error)
+#return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
 
 @app.route("/todos/<int:todo_id>", methods=["PUT"])
